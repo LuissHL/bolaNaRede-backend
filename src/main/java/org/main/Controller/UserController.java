@@ -20,20 +20,36 @@ public class UserController implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+        System.out.println("📩 Requisição recebida em /users com método: " + exchange.getRequestMethod());
+
+        // 🔹 CORS - permite chamadas do front
+        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
+
+        // 🔹 Tratar OPTIONS (pré-flight do navegador)
+        if ("OPTIONS".equals(exchange.getRequestMethod())) {
+            exchange.sendResponseHeaders(204, -1); // sem conteúdo
+            return;
+        }
+
         String method = exchange.getRequestMethod();
 
         if ("POST".equals(method)) {
+
             // cadastrar usuário
             String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
             String[] parts = body.split(",");
 
-            User user = userService.registrar(parts[0], parts[1], parts[2], parts[3], parts[4]);
+            User user = userService.registrar(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]);
 
             String response = "{ \"id\": " + user.getId() + ", \"nome\": \"" + user.getNome() + "\" }";
             exchange.sendResponseHeaders(201, response.getBytes().length);
             try (OutputStream os = exchange.getResponseBody()) {
                 os.write(response.getBytes());
             }
+            System.out.println("📥 Corpo recebido: " + body);
+
         }
         else if ("GET".equals(method)) {
             // listar usuários

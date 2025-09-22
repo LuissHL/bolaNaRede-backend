@@ -10,8 +10,8 @@ public class UserService {
     private UserRepository repo;
     public UserService(UserRepository repo) { this.repo = repo; }
 
-    public User registrar(String nome, String email, String senha, String telefone, String time) {
-        return repo.addUser(nome, email, senha, telefone, time);
+    public User registrar(String nome, String email, String senha, String cpf,String telefone, String time) {
+        return repo.addUser(nome, email, senha, cpf, telefone, time);
     }
 
     public User buscarPorEmail(String email) {

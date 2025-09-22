@@ -24,6 +24,17 @@ public class AnuncioController  implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+        // 🔹 CORS - permite chamadas do front
+        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
+
+        // 🔹 Tratar OPTIONS (pré-flight do navegador)
+        if ("OPTIONS".equals(exchange.getRequestMethod())) {
+            exchange.sendResponseHeaders(204, -1); // sem conteúdo
+            return;
+        }
+
         String method = exchange.getRequestMethod();
 
         if ("POST".equals(method)) {
@@ -63,5 +74,5 @@ public class AnuncioController  implements HttpHandler {
             exchange.sendResponseHeaders(405, -1);
         }
     }
-    }
 }
+

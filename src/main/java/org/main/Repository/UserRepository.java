@@ -10,8 +10,8 @@ public class UserRepository {
     private List<User> users = new ArrayList();
     private int nextId = 1;
 
-    public User addUser(String nome, String email, String senha,String telefone, String timeCoracao ) {
-        User user = new User(nextId++,nome, email, senha, telefone, timeCoracao);
+    public User addUser(String nome, String email, String senha, String cpf, String telefone, String timeCoracao ) {
+        User user = new User(nextId++,nome, email, senha, cpf, telefone, timeCoracao);
         users.add(user);
         return user;
     }
