@@ -8,6 +8,8 @@ public class User {
     private String cpf;
     private String telefone;
     private String timeCoracao;
+    private String role; // "USUARIO", "DONO", "GOLEIRO", "ADMIN"
+
 
     public User(int id, String nome, String email, String senha, String cpf, String telefone, String time) {
         this.id = id;
@@ -17,6 +19,7 @@ public class User {
         this.cpf = cpf;
         this.telefone = telefone;
         this.timeCoracao = time;
+        this.role = "USUARIO"; // padrão ao cadastrar
     }
 
     // Getters e Setters
@@ -77,6 +80,12 @@ public class User {
     public void setTimeCoracao(String timeCoracao) {
         this.timeCoracao = timeCoracao;
     }
+    public String getRole() { return role; }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
 
     @Override
     public String toString() {

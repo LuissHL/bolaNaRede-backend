@@ -1,12 +1,16 @@
 package org.main;
 
 import com.sun.net.httpserver.HttpServer;
+import org.main.Controller.AnuncioController;
 import org.main.Controller.AuthController;
+import org.main.Controller.CampoController;
 import org.main.Controller.UserController;
 import org.main.Repository.AnuncioRepository;
+import org.main.Repository.CampoRepository;
 import org.main.Repository.UserRepository;
 import org.main.Service.AnuncioService;
 import org.main.Service.AuthService;
+import org.main.Service.CampoService;
 import org.main.Service.UserService;
 import org.main.model.Anuncio;
 import org.main.model.User;
@@ -18,11 +22,14 @@ public class Program {
         // Criando "banco simulado"
         UserRepository userRepo = new UserRepository();
         AnuncioRepository anuncioRepo = new AnuncioRepository();
+        CampoRepository campoRepository = new CampoRepository();
 
         // Criando serviços
         UserService userService = new UserService(userRepo);
         AuthService authService = new AuthService(userRepo);
+        CampoService campoService = new CampoService(campoRepository, userRepo);
         AnuncioService anuncioService = new AnuncioService(anuncioRepo);
+
 
         // Criando servidor
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
@@ -30,6 +37,9 @@ public class Program {
         // Registrando rotas
         server.createContext("/users", new UserController(userService));
         server.createContext("/login", new AuthController(authService));
+        server.createContext("/campos", new CampoController(campoService));
+        server.createContext("/anuncios", new AnuncioController(anuncioService, userService));
+
 
         server.start();
         System.out.println("Servidor rodando em http://localhost:8080");
